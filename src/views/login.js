@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 import UsuarioService from '../app/service/usuarioService';
 import LocalStorageService from '../app/service/localStoreService'
+import { mensagemErro } from '../components/toastr'
 
 class Login extends React.Component {
 
@@ -28,7 +29,7 @@ class Login extends React.Component {
             LocalStorageService.adicionarItem( '_usuario_logado',response.data )
             this.props.history.push("/home")
         }).catch((error) => {
-            this.setState({mensagemErro: error.response.data})
+            mensagemErro(error.response.data)
     })
 }
 
@@ -44,7 +45,6 @@ class Login extends React.Component {
                     <Card title="Login">
                         <div className="row">
                             <div className="row">
-                                <span>{this.state.mensagemErro}</span>
                             </div>  
                             <div className="col-lg-12">
                                 <div className="bs-component">
