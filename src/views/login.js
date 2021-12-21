@@ -46,7 +46,7 @@ class Login extends React.Component {
                         <div className="row">
                             <div className="row">
                             </div>  
-                            <div className="col-lg-12">
+                            <div className="col-md-12">
                                 <div className="bs-component">
                                     <fieldset>
                                         <FormGroup label="Email: *" htmlFor="exampleInputEmail1">
