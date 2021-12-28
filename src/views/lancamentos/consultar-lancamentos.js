@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-constructor */
 import React from 'react';
 import { withRouter } from 'react-router-dom'
 import Card from '../../components/card'
@@ -5,54 +6,103 @@ import FormGroup from '../../components/form-group';
 import SelectMenu from '../../components/select-menu'
 import LancamentosTable from './lancamentosTable'
 
+import LancamentoService from '../../app/service/lancamentoService'
+import LocalStorageService from '../../app/service/localStoreService'
+
+import * as messages from '../../components/toastr'
+
 class ConsultarLancamentos extends React.Component {
+
+    state = {
+        ano : '',
+        mes : '',
+        tipo : '',
+        descricao: '',
+        lancamentos: []
+    }
+
+    constructor() {
+        super();
+        this.service = new LancamentoService();
+    }
+
+    buscar = () => {
+
+        if(!this.state.ano){
+            messages.mensagemErro('O preenchimento do campo Ano é obrigatório.')
+            return false
+        }
+
+        const usuarioLogado = LocalStorageService.obterItem('_usuario_logado')
+
+        const lancamentoFiltro = {
+            ano: this.state.ano,
+            mes: this.state.mes, 
+            tipo: this.state.tipo,
+            descricao: this.state.descricao,
+            usuario: usuarioLogado.id
+        }
+
+        this.service.consultar(lancamentoFiltro).then(response => {
+            this.setState({lancamentos: response.data})
+        }).catch(error => {
+            console.log(error);
+            messages.mensagemErro(error.response.data)
+        })
+    }
+
+    editar = (id) => {
+        console.log('Editando o lancamento ', id)
+    }
+
+    deletar = (lancamento) => {
+        this.service.deletar(lancamento.id).then(response => {
+            const lancamentos = this.state.lancamentos;
+            const index = lancamentos.indexOf(lancamento);
+            lancamentos.splice(index, 1);
+            this.setState(lancamentos);
+            messages.mensagemSucesso('Lançamento deletado com sucesso.')
+        }).catch(error => {
+            messages.mensagemErro('Ocorreu um erro ao tentar deletar o lancamento.')
+        })
+    }
+
    render() {
 
-    const lista = [
-        {label: 'Selecione...', value: ''},
-        {label: 'Janeiro', value: 1},
-        {label: 'Fevereiro', value: 2},
-        {label: 'Março', value: 3},
-        {label: 'Abril', value: 4},
-        {label: 'Maio', value: 5},
-        {label: 'Junho', value: 6},
-        {label: 'Julho', value: 7},
-        {label: 'Agosto', value: 8},
-        {label: 'Setembro', value: 9},
-        {label: 'Outubro', value: 10},
-        {label: 'Novembro', value: 11},
-        {label: 'Dezembro', value: 12},
-    ];
+    const lista = this.service.obterListaMeses();
 
-    const tipos = [
-        {label: 'Selecione...', value: ''},
-        {label: 'Receita', value: 'RECEITA'},
-        {label: 'Despesa', value: 'DESPESA'}
-    ];
+    const tipos = this.service.obterListaTipos();
 
-    const lancamentos = [
-        {id : 1, descricao : 'Salário', valor : 200.20, mes: 1, tipo: 'Receita', status : 'Pendente'}
-    ]
 
        return (
            <Card title="Consultar Lancamentos">
                <div className="row">
-                    <div className="col-md-3">
+                    <div className="col-md-6">
                         <div className="bs-component">
                             <FormGroup htmlFor="imputAno" label="Ano: *">
                                 <input type="text" className="form-control"
-                                       id="imputAno" aria-describedby=""
+                                       id="imputAno" value={this.state.ano} onChange={e => this.setState({ano: e.target.value})}
                                        placeholder="Digite o ano"/>
                             </FormGroup>
 
                             <FormGroup htmlFor="imputMes" label="Mês: ">
-                                <SelectMenu id="imputMes" className="form-control" lista={lista} />
+                                <SelectMenu id="imputMes" className="form-control" 
+                                            value={this.state.mes} onChange={e => this.setState({mes: e.target.value})}
+                                            lista={lista} />
+                            </FormGroup>
+
+                            <FormGroup htmlFor="imputDescricao" label="Descrição: ">
+                                <input type="text" className="form-control"
+                                       id="imputDescricao" value={this.state.descricao} onChange={e => this.setState({descricao: e.target.value})}
+                                       placeholder="Digite a descrição"/>
                             </FormGroup>
 
                             <FormGroup htmlFor="imputTipo" label="Tipo Lancamento: ">
-                                <SelectMenu id="imputTipo" className="form-control" lista={tipos} />
+                                <SelectMenu id="imputTipo" className="form-control" 
+                                            value={this.state.tipo} onChange={e => this.setState({tipo: e.target.value})}
+                                            lista={tipos} />
                             </FormGroup>
-                            <button onClick={''} type="button" className="btn btn-success">Buscar</button>
+                            <button onClick={this.buscar} type="button" className="btn btn-success">Buscar</button>
                             <button onClick={''} type="button" className="btn btn-danger">Cadastrar</button>
                         </div>
                    </div>
@@ -61,7 +111,9 @@ class ConsultarLancamentos extends React.Component {
                <div className="row">
                    <div className="col-md-12">
                        <div className="bs-component">
-                            <LancamentosTable lancamentos={lancamentos} />
+                            <LancamentosTable lancamentos={this.state.lancamentos}
+                                              deleteAction={this.deletar}
+                                              editAction={this.editar} />
                        </div>
                    </div>
                </div>
