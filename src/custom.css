@@ -219,6 +219,10 @@ pre{
     }
 }
 
+.btn {
+    
+}
+
 .btn-success, .btn-danger, .btn-warning, .btn-outline-success, .btn-outline-danger {
     margin: 2px 2px;
 }

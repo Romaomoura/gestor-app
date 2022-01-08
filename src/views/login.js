@@ -65,8 +65,8 @@ class Login extends React.Component {
                                                     placeholder="Digite sua senha"/>
                                         </FormGroup>
                                     </fieldset>
-                                    <button onClick={this.entrar} type="button" className="btn btn-outline-success">Entrar</button>
-                                    <button onClick={this.prepareCadastrar} type="button" className="btn btn-outline-danger">Cadastrar</button>
+                                    <button onClick={this.entrar} type="button" className="btn btn-outline-success"><i className="pi pi-sign-in"></i> Entrar</button>
+                                    <button onClick={this.prepareCadastrar} type="button" className="btn btn-outline-danger"><i className="pi pi-user-plus"></i> Cadastrar</button>
                                 </div>
                             </div>
                         </div>
