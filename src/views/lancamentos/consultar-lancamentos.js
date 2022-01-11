@@ -48,10 +48,14 @@ class ConsultarLancamentos extends React.Component {
             usuario: usuarioLogado.id
         }
 
-        this.service.consultar(lancamentoFiltro).then(response => {
-            this.setState({lancamentos: response.data})
+        this.service.consultar(lancamentoFiltro)
+            .then(response => {
+                const lista = response.data;
+                if(lista.length < 1) {
+                    messages.mensagemAlerta('Nenhum resultado encontrado.');
+                }
+                this.setState({lancamentos: lista})
         }).catch(error => {
-            console.log(error);
             messages.mensagemErro(error.response.data)
         })
     }

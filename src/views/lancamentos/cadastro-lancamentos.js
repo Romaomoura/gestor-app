@@ -149,7 +149,7 @@ class CadastrarLancamentos extends React.Component {
                 </div>
                 { this.state.atualizando ?
                     (
-                        <button onClick={this.atualizar} type="button" className="btn btn-outline-success">Atualizar</button>
+                        <button onClick={this.atualizar} type="button" className="btn btn-outline-success"> <i className="pi pi-refresh"></i> Atualizar</button>
                     ) : (
                         <button onClick={this.submit} type="button" className="btn btn-success"><i className="pi pi-save"></i> Salvar</button>
                     )
