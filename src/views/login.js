@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 import { AuthContext } from '../main/provedor-autenticacao';
 import UsuarioService from '../app/service/usuarioService';
-import { mensagemErro } from '../components/toastr';
+import * as messages from '../components/toastr'
 
 class Login extends React.Component {
 
@@ -29,9 +29,9 @@ class Login extends React.Component {
             this.context.iniciarSessao(response.data)
             this.props.history.push("/home")
         }).catch((error) => {
-            mensagemErro(error.response.data)
+            messages.mensagemErro('Erro ao fazer login')
     })
-}
+    }
 
     prepareCadastrar = () => {
         this.props.history.push('/cadastro-usuario')

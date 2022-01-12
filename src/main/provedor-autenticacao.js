@@ -9,25 +9,25 @@ const AuthProvider = AuthContext.Provider;
 class ProvedorAutenticacao extends React.Component {
 
     state = {
-        usuarioAutenticado: null,
+        isUsuarioAutenticado: null,
         isAutenticado: false
     }
 
     iniciarSessao = (usuario) => {
         AuthService.logar(usuario);
-        this.setState({isAutenticado: true, usuarioAutenticado: usuario});
+        this.setState({isAutenticado: true, isUsuarioAutenticado: usuario});
     }
 
     encerrarSessao = () => {
         AuthService.removerUsuarioAutenticado();
-        this.setState({isAutenticado: false, usuarioAutenticado: null});
+        this.setState({isAutenticado: false, isUsuarioAutenticado: null});
     }
 
     render() {
         
         const contexto = {
             isAutenticado: this.state.isAutenticado,
-            usuarioAutenticado: this.state.usuarioAutenticado,
+            isUsuarioAutenticado: this.state.isUsuarioAutenticado,
             iniciarSessao: this.iniciarSessao,
             encerrarSessao: this.encerrarSessao
         } 
