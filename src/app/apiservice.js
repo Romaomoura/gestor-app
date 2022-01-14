@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const httpCliente = axios.create(
     {
-        baseURL: 'https://gfinc-api.herokuapp.com'
+        baseURL: 'https://gfinc-api.herokuapp.com/'
     }
 )
 class ApiService {
