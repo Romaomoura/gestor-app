@@ -5,7 +5,6 @@ const httpCliente = axios.create(
         baseURL: 'https://gfinc-api.herokuapp.com'
     }
 )
-
 class ApiService {
 
     constructor(apiUrl){
