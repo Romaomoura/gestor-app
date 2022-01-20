@@ -2,7 +2,6 @@ import ApiService from '../apiservice';
 
 import ErroValidacao from '../exception/ErroValidacao'
 
-
 class UsuarioService extends ApiService {
 
     constructor(){
@@ -14,6 +13,7 @@ class UsuarioService extends ApiService {
     }
 
     obterSaldoReceitaPorUsuario(id){
+        console.log('IdUSuarioReceita>>> ',id)
         return this.get(`/${id}/receitas`);
     }
 
@@ -26,7 +26,7 @@ class UsuarioService extends ApiService {
     }
 
     salvar(usuario){
-        return this.post('/', usuario);
+        return this.post('', usuario);
     }
 
     validar(usuario){
